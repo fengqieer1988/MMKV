@@ -116,7 +116,7 @@ void testStruct2(MMKV *mmkv){
     Company* company = (Company*)readV.getPtr();
     if(!company)
     {
-        printf("getBytes myStruct getPtr return null\n");
+        printf("getBytes myStruct getPtr return null, len:%d\n", (int)readV.length());
         return ;
     }
 
