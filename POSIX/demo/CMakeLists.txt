@@ -58,8 +58,18 @@ set_target_properties(UnitTest PROPERTIES
         CXX_STANDARD 11
         )
 
+# 测试结构体pb后，然后结构体中结构体新增字段，是否能兼容		
+add_executable(UnitTestStructCompatible
+        UnitTestStructCompatible.cpp)
+target_link_libraries(UnitTestStructCompatible
+        mmkv)
+set_target_properties(UnitTestStructCompatible PROPERTIES
+        CXX_STANDARD 11
+        )
+
 add_dependencies(demo
         process
         TestInterProcessLock
-        UnitTest)
+        UnitTest
+		UnitTestStructCompatible)
 
