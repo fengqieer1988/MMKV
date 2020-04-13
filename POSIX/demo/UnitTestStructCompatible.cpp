@@ -83,7 +83,7 @@ void testStruct(MMKV *mmkv){
     company.employeeList[1].age = 201;
     company.employeeList[1].tall = 202;
 
-    company.employeeList = 2;
+    company.numberOfEmployees = 2;
 
     MMBuffer buffer((void *) &company, sizeof(company), MMBufferNoCopy);
 
