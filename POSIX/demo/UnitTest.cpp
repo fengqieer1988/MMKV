@@ -24,6 +24,9 @@
 #include <iostream>
 #include <numeric>
 #include <unistd.h>
+#include <unistd.h>
+#include <math.h>
+#include <string.h>
 
 using namespace std;
 using namespace mmkv;
@@ -125,7 +128,7 @@ void testUInt64(MMKV *mmkv) {
 
 template <typename T>
 bool EqualWithAccuracy(T value1, T value2, T accuracy) {
-    return abs(value1 - value2) <= accuracy;
+    return fabs(double(value1 - value2)) <= accuracy;
 }
 
 void testFloat(MMKV *mmkv) {
