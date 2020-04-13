@@ -96,6 +96,15 @@ void testStruct(MMKV *mmkv){
     assert(value.length() == buffer.length() && memcmp(value.getPtr(), buffer.getPtr(), value.length()) == 0);
 
     printf("getBytes myStruct suc, size:%d\n", sizeof(company));
+
+    Company* readCompany = (Company*)value.getPtr();
+    if(readCompany)
+    {
+        printf("getBytes myStruct suc, element cnt:%d\n", readCompany->numberOfEmployees);
+        printf("getBytes myStruct suc, element0, id:%d, age:%d, tall:%d\n", readCompany->employeeList[0].id, readCompany->employeeList[0].age, readCompany->employeeList[0].tall);
+        printf("getBytes myStruct suc, element1, id:%d, age:%d, tall:%d\n", readCompany->employeeList[1].id, readCompany->employeeList[1].age, readCompany->employeeList[0].tall);
+    }
+
 }
 
 int main() {
