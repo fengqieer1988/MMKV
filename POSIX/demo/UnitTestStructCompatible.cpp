@@ -50,6 +50,7 @@ struct Employee
     int id;
     int age;
     int tall;
+    int familyMemberCnt;
 };
  
 struct Company
@@ -73,7 +74,7 @@ void testBytes(MMKV *mmkv) {
     printf("test bytes: passed\n");
 }
 
-void testStruct(MMKV *mmkv){
+void testStruct1(MMKV *mmkv){
     Company company;
     company.employeeList[0].id = 100;
     company.employeeList[0].age = 101;
@@ -102,7 +103,50 @@ void testStruct(MMKV *mmkv){
     {
         printf("getBytes myStruct suc, element cnt:%d\n", readCompany->numberOfEmployees);
         printf("getBytes myStruct suc, element0, id:%d, age:%d, tall:%d\n", readCompany->employeeList[0].id, readCompany->employeeList[0].age, readCompany->employeeList[0].tall);
-        printf("getBytes myStruct suc, element1, id:%d, age:%d, tall:%d\n", readCompany->employeeList[1].id, readCompany->employeeList[1].age, readCompany->employeeList[0].tall);
+        printf("getBytes myStruct suc, element1, id:%d, age:%d, tall:%d\n", readCompany->employeeList[1].id, readCompany->employeeList[1].age, readCompany->employeeList[1].tall);
+    }
+}
+
+void testStruct2(MMKV *mmkv){
+
+    auto readV = mmkv->getBytes("myStruct");
+    assert(readV.length() == buffer.length() && memcmp(readV.getPtr(), buffer.getPtr(), readV.length()) == 0);
+
+    printf("getBytes myStruct suc1, size:%d\n", sizeof(Company));
+
+    Company* company = (Company*)value.getPtr();
+    if(!company)
+    {
+        printf("getBytes myStruct getPtr return null\n");
+        return ;
+    }
+
+    printf("getBytes myStruct suc, element cnt:%d\n", company->numberOfEmployees);
+    printf("getBytes myStruct suc, element0, id:%d, age:%d, tall:%d\n", company->employeeList[0].id, company->employeeList[0].age, company->employeeList[0].tall);
+    printf("getBytes myStruct suc, element1, id:%d, age:%d, tall:%d\n", company->employeeList[1].id, company->employeeList[1].age, company->employeeList[1].tall);
+
+    // 对新增的成员赋值
+    company->employeeList[0].familyMemberCnt = 5;
+    company->employeeList[0].familyMemberCnt = 10;
+
+    MMBuffer buffer((void *) &company, sizeof(company), MMBufferNoCopy);
+
+    auto ret = mmkv->set(buffer, "myStruct");
+    assert(ret);
+
+    printf("set myStruct suc, size:%d\n", sizeof(company));
+
+    auto value = mmkv->getBytes("myStruct");
+    assert(value.length() == buffer.length() && memcmp(value.getPtr(), buffer.getPtr(), value.length()) == 0);
+
+    printf("getBytes myStruct suc2, size:%d\n", sizeof(company));
+
+    Company* readCompany = (Company*)value.getPtr();
+    if(readCompany)
+    {
+        printf("getBytes myStruct suc, element cnt:%d\n", readCompany->numberOfEmployees);
+        printf("getBytes myStruct suc, element0, id:%d, age:%d, tall:%d\n", readCompany->employeeList[0].id, readCompany->employeeList[0].age, readCompany->employeeList[0].tall, readCompany->employeeList[0].familyMemberCnt);
+        printf("getBytes myStruct suc, element1, id:%d, age:%d, tall:%d\n", readCompany->employeeList[1].id, readCompany->employeeList[1].age, readCompany->employeeList[1].tall, readCompany->employeeList[0].familyMemberCnt);
     }
 
 }
@@ -119,5 +163,5 @@ int main() {
     auto mmkv = MMKV::mmkvWithID("unit_test");
     mmkv->clearAll();
 
-    testStruct(mmkv);
+    testStruct2(mmkv);
 }
