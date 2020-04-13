@@ -24,6 +24,7 @@
 #include <iostream>
 #include <numeric>
 #include <unistd.h>
+#include <string.h>
 
 using namespace std;
 using namespace mmkv;
@@ -109,5 +110,5 @@ int main() {
     auto mmkv = MMKV::mmkvWithID("unit_test");
     mmkv->clearAll();
 
-    testStruct();
+    testStruct(mmkv);
 }
