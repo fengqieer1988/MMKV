@@ -110,11 +110,10 @@ void testStruct1(MMKV *mmkv){
 void testStruct2(MMKV *mmkv){
 
     auto readV = mmkv->getBytes("myStruct");
-    assert(readV.length() == buffer.length() && memcmp(readV.getPtr(), buffer.getPtr(), readV.length()) == 0);
 
     printf("getBytes myStruct suc1, size:%d\n", sizeof(Company));
 
-    Company* company = (Company*)value.getPtr();
+    Company* company = (Company*)readV.getPtr();
     if(!company)
     {
         printf("getBytes myStruct getPtr return null\n");
